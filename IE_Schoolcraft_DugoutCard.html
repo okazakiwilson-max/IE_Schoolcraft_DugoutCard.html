@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Schoolcraft — Inland Empire Dugout Card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1D1512;        /* field */
+  --card:#2F241D;       /* padres brown surface */
+  --card-hi:#3A2D24;
+  --line:#4A3A2E;
+  --gold:#FFC72C;
+  --gold-dim:#B8901F;
+  --sand:#F2E9DB;
+  --mut:#A8998A;
+  --green:#1FA855;
+  --red:#DE3B3B;
+  --disp:'Barlow Condensed','Arial Narrow',sans-serif;
+  --body:'Archivo',-apple-system,'Helvetica Neue',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{background:var(--ink);color:var(--sand);font-family:var(--body);overscroll-behavior:none}
+
+/* ---------- top bar ---------- */
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:2px solid var(--gold);background:var(--card);position:sticky;top:0;z-index:50}
+.topbar .brand{font-family:var(--disp);font-weight:800;font-size:22px;letter-spacing:.04em;color:var(--gold);text-transform:uppercase;white-space:nowrap}
+.topbar .sub{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.12em;white-space:nowrap}
+.topbar .spacer{flex:1}
+.tabbtn{font-family:var(--disp);font-weight:700;font-size:16px;letter-spacing:.06em;text-transform:uppercase;background:none;border:2px solid var(--line);color:var(--sand);padding:8px 14px;border-radius:8px;cursor:pointer}
+.tabbtn.active{border-color:var(--gold);color:var(--gold)}
+.tabbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+
+/* ---------- layout ---------- */
+.wrap{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 55px)}
+@media(max-width:740px){.wrap{grid-template-columns:1fr}.rail{flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);position:sticky;top:55px;z-index:40;background:var(--ink)}
+ .railitem{min-width:120px;border-bottom:none;border-right:1px solid var(--line)}
+ .raildivider{display:none}}
+
+/* ---------- lineup rail ---------- */
+.rail{display:flex;flex-direction:column;border-right:1px solid var(--line);background:#181008}
+.railitem{display:flex;align-items:center;gap:10px;padding:11px 12px;border-bottom:1px solid #2a2018;cursor:pointer;min-height:56px;text-align:left;background:none;border-left:4px solid transparent;color:var(--sand);font-family:var(--body)}
+.railitem .ord{font-family:var(--disp);font-weight:800;font-size:22px;color:var(--gold);width:26px;text-align:center;flex-shrink:0}
+.railitem .nm{font-family:var(--disp);font-weight:600;font-size:18px;letter-spacing:.03em;text-transform:uppercase;line-height:1;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.railitem .jr{font-size:10px;color:var(--mut)}
+.railitem .sd{font-size:10px;font-weight:700;color:var(--mut)}
+.railitem.sel{background:var(--card);border-left-color:var(--gold)}
+.railitem.sel .nm{color:var(--gold)}
+.railitem:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
+.raildivider{padding:6px 12px;font-size:10px;letter-spacing:.2em;color:var(--mut);text-transform:uppercase;background:#120c06;border-bottom:1px solid #2a2018}
+.mvbtns{display:flex;gap:4px}
+.mvbtn{width:34px;height:34px;border-radius:6px;border:1px solid var(--line);background:var(--card-hi);color:var(--gold);font-size:16px;cursor:pointer}
+.editing .railitem{cursor:default}
+
+/* ---------- main / hitter card ---------- */
+.main{padding:16px 20px 40px;max-width:980px}
+.hdr{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:4px}
+.hdr h1{font-family:var(--disp);font-weight:800;font-size:44px;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+.sidechip{font-family:var(--disp);font-weight:800;font-size:20px;padding:2px 12px;border:2px solid var(--gold);border-radius:8px;color:var(--gold);cursor:pointer;background:none}
+.sidechip:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.hdrmeta{font-size:12px;color:var(--mut);letter-spacing:.05em;text-transform:uppercase}
+.hdrmeta b{color:var(--sand)}
+
+/* flags */
+.flags{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+@media(max-width:560px){.flags{grid-template-columns:1fr}}
+.flag{border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border:1px solid var(--line)}
+.flag .lb{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.05em;text-transform:uppercase;line-height:1.05}
+.flag .st{font-size:10.5px;color:var(--mut);margin-top:3px;font-family:var(--body);letter-spacing:0;text-transform:none;font-weight:400}
+.ynbtn{font-family:var(--disp);font-weight:800;font-size:30px;width:58px;height:58px;border-radius:12px;border:none;color:#fff;cursor:pointer;flex-shrink:0;line-height:1}
+.ynbtn.Y{background:var(--green)}
+.ynbtn.N{background:var(--red)}
+.ynbtn.overridden{box-shadow:0 0 0 3px var(--gold)}
+.ynbtn:focus-visible{outline:2px solid var(--sand);outline-offset:2px}
+
+/* rank ladders */
+.ladders{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:6px 0 16px}
+@media(max-width:740px){.ladders{grid-template-columns:1fr}}
+.ladder{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+.ladder h3{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;border-bottom:1px solid var(--line);padding-bottom:7px}
+.rung{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.rung .rk{font-family:var(--disp);font-weight:800;font-size:26px;color:var(--gold);width:22px;text-align:center;flex-shrink:0}
+.rung .barwrap{flex:1;background:#241A12;border-radius:8px;height:46px;position:relative;overflow:hidden}
+.rung .bar{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:8px;min-width:86px}
+.rung .bartxt{position:relative;display:flex;align-items:center;height:100%;padding:0 10px;gap:10px}
+.rung .ptc{font-family:var(--disp);font-weight:800;font-size:22px;color:#1D1512;letter-spacing:.02em}
+.rung .det{font-size:10.5px;color:#3A2D18;font-weight:600;white-space:nowrap}
+.rung.low .bar{background:linear-gradient(90deg,#57452B,#6E5836)}
+.rung.low .ptc{color:#D8CBB6}
+.rung.low .det{color:#C4B49A}
+.lowtag{font-size:9px;font-weight:700;letter-spacing:.08em;background:#1D1512;color:var(--mut);padding:2px 5px;border-radius:4px;text-transform:uppercase}
+.nodata{font-size:12px;color:var(--mut);padding:8px 2px}
+
+/* notes */
+.notesbox{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px}
+.notesbox h3{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.notesbox textarea{width:100%;min-height:110px;background:#241A12;border:1px solid var(--line);border-radius:8px;color:var(--sand);font-family:var(--body);font-size:16px;line-height:1.5;padding:10px;resize:vertical}
+.notesbox textarea:focus{outline:2px solid var(--gold)}
+.cardfoot{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.resetbtn{font-size:12px;background:none;border:1px solid var(--line);color:var(--mut);padding:7px 12px;border-radius:8px;cursor:pointer}
+.savemsg{font-size:11px;color:var(--mut)}
+
+/* ---------- kruz tab ---------- */
+.goalrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0 20px}
+.goal{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.goal .g-l{font-family:var(--disp);font-weight:700;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.goal .g-v{font-family:var(--disp);font-weight:800;font-size:34px;line-height:1.1}
+.goal .g-v.miss{color:var(--red)} .goal .g-v.hit{color:var(--green)}
+.goal .track{height:8px;background:#241A12;border-radius:4px;margin-top:8px;position:relative}
+.goal .fill{position:absolute;left:0;top:0;bottom:0;border-radius:4px;background:var(--gold)}
+.goal .tick{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--sand)}
+.goal .g-g{font-size:10px;color:var(--mut);margin-top:5px}
+.arstbl{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;margin-bottom:16px}
+.arstbl caption{font-family:var(--disp);font-weight:800;font-size:19px;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);text-align:left;padding:12px 14px;background:var(--card);border:1px solid var(--line);border-bottom:none;border-radius:12px 12px 0 0}
+.arstbl th{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);background:var(--card)}
+.arstbl th:first-child{text-align:left}
+.arstbl td{font-size:15px;padding:9px 10px;text-align:right;border-bottom:1px solid #241A12}
+.arstbl td:first-child{text-align:left;font-family:var(--disp);font-weight:700;font-size:18px;color:var(--gold)}
+.arstbl tr:last-child td{border-bottom:none}
+.arstbl{border:1px solid var(--line)}
+.kn{font-size:12px;color:var(--mut);line-height:1.5;max-width:640px}
+
+.hidden{display:none!important}
+@media(prefers-reduced-motion:no-preference){.bar{transition:width .35s ease}.ynbtn{transition:transform .08s}.ynbtn:active{transform:scale(.94)}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <div class="brand">Schoolcraft · Dugout Card</div>
+    <div class="sub">vs Inland Empire 66ers — Aug 14, 2026</div>
+  </div>
+  <div class="spacer"></div>
+  <button class="tabbtn active" id="tabHitters">Lineup</button>
+  <button class="tabbtn" id="tabKruz">Kruz YTD</button>
+  <button class="tabbtn" id="tabEdit">Edit Lineup</button>
+</div>
+
+<div class="wrap" id="hittersView">
+  <nav class="rail" id="rail" aria-label="Batting order"></nav>
+  <main class="main" id="card"></main>
+</div>
+
+<div class="main hidden" id="kruzView" style="margin:0 auto"></div>
+
+<script>
+/* ================= DATA (from Redshift, Aug 6 2026) ================= */
+// Kruz arsenal by pitch group x side: n, velo, whiff (of swings), chase (of OOZ), zone, usage
+const KRUZ = {
+  FB:{L:{n:244,velo:93.9,whf:.264,ch:.210,zn:.492,use:.63}, R:{n:630,velo:94.2,whf:.259,ch:.215,zn:.505,use:.61}},
+  SL:{L:{n:124,velo:80.8,whf:.479,ch:.259,zn:.315,use:.32}, R:{n:152,velo:80.5,whf:.444,ch:.299,zn:.428,use:.15}},
+  CH:{L:{n:12, velo:87.1,whf:1.0, ch:.125,zn:.333,use:.03}, R:{n:233,velo:88.0,whf:.381,ch:.263,zn:.313,use:.23}}
+};
+const KRUZ_COUNTS = {s00:.524, s11:.560, zone:.423, q2k:.305,
+                     g00:.63, g11:.63, gzone:.47, gq2k:.33};
+
+// Players: bam, name, jersey, side ('L','R','S','?')
+const PLAYERS = {
+  805319:{n:'Dervy Ventura',j:1,s:'S'},
+  829306:{n:'Nick Becker',j:9,s:'R'},
+  803290:{n:'Estevan Moreno',j:43,s:'R'},
+  703603:{n:'Grant Jay',j:7,s:'R'},
+  814505:{n:'Ace Reese',j:21,s:'R'},
+  683270:{n:'Connor Dykstra',j:16,s:'R'},
+  814822:{n:'Henry Ford',j:null,s:'R'},
+  836068:{n:'Brayden Corn',j:4,s:'R'},
+  807231:{n:'Ryan Wynn',j:2,s:'R'},
+  694223:{n:'Starlin Aguilar',j:31,s:'L'},
+  829045:{n:'Yorger Bautista',j:3,s:'L'},
+  806701:{n:'Jake Brown',j:17,s:'L'},
+  803734:{n:'Hayden Yost',j:36,s:'L'},
+  900002:{n:'Grant Knipp',j:48,s:'R'},      // two-way, no 2026 batting data
+  900003:{n:'Jacob Galloway',j:null,s:'L'}, // DEV — no game data
+  814456:{n:'Jo Oyama',j:null,s:'?'},          // in data, not on roster scan
+  808143:{n:'Sebastian De Andrade',j:null,s:'?'} // in data, not on roster scan
+};
+// Placeholder order until Friday's lineup card — reorder via Edit Lineup
+const DEFAULT_LINEUP = [805319,829306,803290,703603,814505,683270,814822,836068,807231];
+const DEFAULT_BENCH  = [694223,829045,806701,803734,900002,900003,814456,808143];
+
+// Q5 aggressiveness: swingAll, firstPitch, risp, chase
+const AGGR = {
+  814505:[.410,.250,.273,.256], 836068:[.431,.379,.511,.261], 683270:[.408,.237,.379,.266],
+  805319:[.423,.330,.369,.255], 803290:[.477,.346,.515,.334], 703603:[.456,.413,.410,.281],
+  803734:[.542,.455,.541,.281], 814822:[.504,.484,.486,.302], 806701:[.500,.412,.444,.267],
+  814456:[.508,.333,.571,.343], 829306:[.356,.321,.347,.168], 807231:[.426,.160,.455,.222],
+  808143:[.382,.417,.448,.224], 694223:[.522,.372,.586,.360], 829045:[.722,.786,.667,.737]
+};
+// Q6 runners: [sb, cs]
+const RUN = {
+  805319:[29,8],803290:[19,4],829306:[7,1],703603:[5,2],836068:[4,0],683270:[3,2],
+  806701:[3,0],814822:[1,0],807231:[1,0],808143:[1,1],694223:[0,1],803734:[0,1]
+};
+
+// Q4 attack rows vs comp-LHP pool (2026): [bam, bucket, group, pitches, swings, whiff, chase, bip, hardHits, xwoba]
+const ATK = [
+ [683270,'K','CH',6,2,0,.333,0,0,null],[683270,'K','FB',7,3,.667,.25,1,0,.810],
+ [683270,'B','FB',6,5,.4,.667,2,1,.389],[683270,'B','SL',6,5,.4,.5,2,0,.474],
+ [683270,'E','CH',7,3,1,.75,0,0,null],[683270,'E','FB',17,5,.2,0,2,1,.466],
+ [805319,'K','FB',12,7,0,0,3,1,.101],[805319,'B','FB',12,4,0,0,2,1,.463],
+ [805319,'E','CH',5,2,1,.5,0,0,null],[805319,'E','FB',23,7,.286,.071,3,0,.295],
+ [803290,'K','CH',7,5,.6,.667,2,1,.020],[803290,'K','FB',11,5,.6,.167,1,0,.511],
+ [803290,'B','FB',7,3,.333,0,1,1,1.372],[803290,'E','CH',9,4,.5,.333,0,0,null],
+ [803290,'E','FB',18,10,.2,.286,2,2,.905],[803290,'E','SL',5,1,1,.333,0,0,null],
+ [703603,'K','FB',8,3,.333,0,1,1,.643],[703603,'B','FB',9,3,.667,.2,0,0,null],
+ [703603,'E','CH',7,2,.5,0,1,1,1.753],[703603,'E','FB',11,6,.333,.25,2,0,.455],
+ [829306,'B','FB',5,2,.5,0,1,0,.010],
+ [694223,'K','FB',5,3,0,1,1,1,.141]
+];
+
+/* ================= STATE / PERSISTENCE ================= */
+const LSKEY='kruz_ie_aug2026_v1';
+let mem={};
+function loadState(){
+  try{const raw=localStorage.getItem(LSKEY); if(raw) return JSON.parse(raw);}catch(e){}
+  return {lineup:[...DEFAULT_LINEUP],bench:[...DEFAULT_BENCH],ov:{}};
+}
+function saveState(){
+  try{localStorage.setItem(LSKEY,JSON.stringify(ST));}catch(e){mem=ST;}
+  const el=document.getElementById('savemsg'); if(el){el.textContent='Saved';setTimeout(()=>{el.textContent=''},1200);}
+}
+let ST=loadState();
+let SEL=ST.lineup[0];
+let EDITING=false;
+
+/* ================= FLAG PRE-FILL RULES ================= */
+function dataFlags(bam){
+  const a=AGGR[bam], r=RUN[bam]||[0,0];
+  const runner=(r[0]>=8||r[0]+r[1]>=10)?'Y':'N';
+  let aggr='N',risp='N';
+  if(a){ if(a[0]>=.47||a[1]>=.38) aggr='Y';
+         if((a[2]-a[0])>=.03||a[2]>=.50) risp='Y'; }
+  return {runner,aggr,risp};
+}
+function flagOf(bam,key){
+  const ov=ST.ov[bam]; if(ov&&ov[key]) return {v:ov[key],ovr:true};
+  return {v:dataFlags(bam)[key],ovr:false};
+}
+function sideOf(bam){
+  const ov=ST.ov[bam]; if(ov&&ov.side) return ov.side;
+  return PLAYERS[bam].s;
+}
+
+/* ================= RANK ENGINE ================= */
+// score = 45*whiff + 35*chase - 25*damage ; shrunk toward Kruz prior (K=8)
+// Prior itself is shrunk toward Kruz's pooled both-sides numbers (K=40)
+// and damped by usage, so a 12-pitch sample can't top a ladder.
+function kruzPrior(pg,side){
+  const s=(side==='L'||side==='R')?side:'R';
+  const k=KRUZ[pg][s], o=KRUZ[pg][s==='L'?'R':'L'];
+  const pw=(k.n*k.whf+o.n*o.whf)/(k.n+o.n);
+  const pc=(k.n*k.ch +o.n*o.ch )/(k.n+o.n);
+  const sideScore=45*k.whf+35*k.ch, poolScore=45*pw+35*pc;
+  const blended=(k.n*sideScore+40*poolScore)/(k.n+40);
+  const damp=0.6+0.4*Math.min(k.use/0.15,1);
+  return blended*damp;
+}
+function ranksFor(bam,phase){ // phase 'PRE' (E+B) or 'K'
+  const side=sideOf(bam);
+  const rows=ATK.filter(r=>r[0]===bam&&(phase==='K'?r[1]==='K':r[1]!=='K'));
+  const out=[];
+  ['FB','SL','CH'].forEach(pg=>{
+    const rs=rows.filter(r=>r[2]===pg);
+    let n=0,sw=0,whfW=0,chW=0,bip=0,hh=0,xwW=0,xwN=0;
+    rs.forEach(r=>{
+      n+=r[3]; sw+=r[4];
+      if(r[5]!=null) whfW+=r[5]*r[4];
+      if(r[6]!=null){chW+=r[6]*r[3];}
+      bip+=r[7]; hh+=r[8];
+      if(r[9]!=null&&r[7]>0){xwW+=r[9]*r[7];xwN+=r[7];}
+    });
+    const whf=sw>0?whfW/sw:null;
+    const ch=n>0?chW/n:null;
+    const xw=xwN>0?xwW/xwN:null;
+    const dmg=xw==null?0:Math.min(xw/0.8,1.25);
+    const raw=(whf==null&&ch==null)?null:(45*(whf||0)+35*(ch||0)-25*dmg);
+    const prior=kruzPrior(pg,side);
+    const K=8;
+    const sEff=(side==='L'||side==='R')?side:'R';
+    const use=KRUZ[pg][sEff].use;
+    const rare=(raw==null&&use<0.08);
+    const score=raw==null?(rare?-1000+prior:prior*0.92):(n*raw+K*prior)/(n+K);
+    out.push({pg,n,whf,ch,xw,hh,score,noData:raw==null,rare,sEff});
+  });
+  out.sort((a,b)=>b.score-a.score);
+  return out;
+}
+
+/* ================= RENDER: RAIL ================= */
+const PG_LABEL={FB:'FB',SL:'SL',CH:'CH'};
+function fmtPct(v){return v==null?'—':Math.round(v*100)+'%';}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/'/g,'&#39;');}
+
+function renderRail(){
+  const rail=document.getElementById('rail');
+  rail.innerHTML='';
+  rail.classList.toggle('editing',EDITING);
+  const addItem=(bam,idx,inLineup)=>{
+    const p=PLAYERS[bam];
+    const el=document.createElement('button');
+    el.className='railitem'+(bam===SEL?' sel':'');
+    el.setAttribute('aria-label',p.n);
+    const ord=inLineup?(idx+1):'·';
+    el.innerHTML=`<span class="ord">${ord}</span>
+      <span class="nm">${esc(p.n)}</span>
+      <span class="sd">${({L:'LHH',R:'RHH',S:'SW'})[sideOf(bam)]||''}</span>`;
+    if(EDITING){
+      const mv=document.createElement('span'); mv.className='mvbtns';
+      const up=document.createElement('button'); up.className='mvbtn'; up.textContent='▲';
+      const dn=document.createElement('button'); dn.className='mvbtn'; dn.textContent='▼';
+      up.onclick=(e)=>{e.stopPropagation();moveItem(bam,-1);};
+      dn.onclick=(e)=>{e.stopPropagation();moveItem(bam,1);};
+      mv.appendChild(up);mv.appendChild(dn);
+      el.appendChild(mv);
+    }
+    el.onclick=()=>{SEL=bam;renderRail();renderCard();};
+    rail.appendChild(el);
+  };
+  ST.lineup.forEach((b,i)=>addItem(b,i,true));
+  const div=document.createElement('div');div.className='raildivider';div.textContent='Bench / Reserves';
+  rail.appendChild(div);
+  ST.bench.forEach((b,i)=>addItem(b,i,false));
+}
+function moveItem(bam,dir){
+  const all=[...ST.lineup,...ST.bench];
+  const i=all.indexOf(bam); const j=i+dir;
+  if(j<0||j>=all.length) return;
+  [all[i],all[j]]=[all[j],all[i]];
+  ST.lineup=all.slice(0,9); ST.bench=all.slice(9);
+  saveState(); renderRail();
+}
+
+/* ================= RENDER: HITTER CARD ================= */
+function ynStat(bam,key){
+  const a=AGGR[bam],r=RUN[bam];
+  if(key==='runner') return r?`${r[0]} SB / ${r[1]} CS`:'no SB data';
+  if(!a) return 'no data';
+  if(key==='aggr') return `${fmtPct(a[0])} swing · ${fmtPct(a[1])} 1st-pitch · ${fmtPct(a[3])} chase`;
+  return `${fmtPct(a[2])} swing w/ RISP (vs ${fmtPct(a[0])} overall)`;
+}
+function renderLadder(title,list){
+  let inner=`<h3>${title}</h3>`;
+  const max=Math.max(...list.map(x=>x.rare?0:x.score),1);
+  list.forEach((x,i)=>{
+    const w=x.rare?38:Math.min(100,Math.max(38,Math.round(x.score/max*100)));
+    const low=x.n<8;
+    const det=x.rare
+      ? `<span class="det">rarely thrown vs ${x.sEff}HH</span>`
+      : x.noData
+      ? `<span class="det">no comp data — Kruz strength</span>`
+      : `<span class="det">whiff ${fmtPct(x.whf)} · chase ${fmtPct(x.ch)} · n=${x.n}</span>`;
+    inner+=`<div class="rung${low&&!x.noData?' low':''}${x.noData?' low':''}">
+      <span class="rk">${i+1}</span>
+      <div class="barwrap"><div class="bar" style="width:${w}%"></div>
+        <div class="bartxt"><span class="ptc">${PG_LABEL[x.pg]}</span>${det}
+        ${low&&!x.noData?'<span class="lowtag">low n</span>':''}</div>
+      </div></div>`;
+  });
+  return `<div class="ladder">${inner}</div>`;
+}
+function renderCard(){
+  const main=document.getElementById('card');
+  const bam=SEL,p=PLAYERS[bam];
+  const side=sideOf(bam);
+  const fl=['runner','aggr','risp'].map(k=>({k,...flagOf(bam,k)}));
+  const labels={runner:'Runner',aggr:'Aggressive',risp:'Aggressive w/ RISP'};
+  const atkN=ATK.filter(r=>r[0]===bam).reduce((s,r)=>s+r[3],0);
+  const notes=(ST.ov[bam]&&ST.ov[bam].notes)||'';
+  main.innerHTML=`
+    <div class="hdr">
+      <h1>${esc(p.n)}</h1>
+      <button class="sidechip" id="sidechip" title="Tap to set batter side">${side==='?'?'SET SIDE':(side==='S'?'SWITCH':side+'HH')}</button>
+      <span class="hdrmeta">${p.j?('#'+p.j+' · '):''}<b>${atkN}</b> pitches vs Kruz-comp LHP</span>
+    </div>
+    <div class="flags">
+      ${fl.map(f=>`
+        <div class="flag">
+          <div><div class="lb">${labels[f.k]}</div><div class="st">${ynStat(bam,f.k)}</div></div>
+          <button class="ynbtn ${f.v}${f.ovr?' overridden':''}" data-k="${f.k}" aria-label="${labels[f.k]}: ${f.v}. Tap to toggle.">${f.v}</button>
+        </div>`).join('')}
+    </div>
+    <div class="ladders">
+      ${renderLadder('Pitch Ranks Before 2K',ranksFor(bam,'PRE'))}
+      ${renderLadder('2K Pitch Ranks',ranksFor(bam,'K'))}
+    </div>
+    <div class="notesbox">
+      <h3>Notes</h3>
+      <textarea id="notes" placeholder="Coach notes — tap to add">${esc(notes)}</textarea>
+    </div>
+    <div class="cardfoot">
+      <button class="resetbtn" id="resetbtn">Reset this card to data</button>
+      <span class="savemsg" id="savemsg"></span>
+    </div>`;
+  main.querySelectorAll('.ynbtn').forEach(btn=>{
+    btn.onclick=()=>{
+      const k=btn.dataset.k;
+      const cur=flagOf(bam,k).v;
+      ST.ov[bam]=ST.ov[bam]||{};
+      const next=cur==='Y'?'N':'Y';
+      if(next===dataFlags(bam)[k]) delete ST.ov[bam][k];
+      else ST.ov[bam][k]=next;
+      saveState(); renderCard();
+    };
+  });
+  document.getElementById('sidechip').onclick=()=>{
+    const order=['L','R','S'];
+    const cur=sideOf(bam);
+    const next=order[(order.indexOf(cur)+1)%3]||'L';
+    ST.ov[bam]=ST.ov[bam]||{};
+    if(next===PLAYERS[bam].s) delete ST.ov[bam].side; else ST.ov[bam].side=next;
+    saveState(); renderRail(); renderCard();
+  };
+  const ta=document.getElementById('notes');
+  let t=null;
+  ta.oninput=()=>{
+    ST.ov[bam]=ST.ov[bam]||{}; ST.ov[bam].notes=ta.value;
+    clearTimeout(t); t=setTimeout(saveState,500);
+  };
+  document.getElementById('resetbtn').onclick=()=>{
+    delete ST.ov[bam]; saveState(); renderCard();
+  };
+}
+
+/* ================= RENDER: KRUZ TAB ================= */
+function goalCard(label,val,goal){
+  const hit=val>=goal;
+  const pct=Math.min(val/ (goal*1.4),1)*100;
+  const tick=Math.min(goal/(goal*1.4),1)*100;
+  return `<div class="goal">
+    <div class="g-l">${label}</div>
+    <div class="g-v ${hit?'hit':'miss'}">${(val*100).toFixed(1)}%</div>
+    <div class="track"><div class="fill" style="width:${pct}%"></div><div class="tick" style="left:${tick}%"></div></div>
+    <div class="g-g">goal ${(goal*100).toFixed(0)}%</div>
+  </div>`;
+}
+function arsTable(side,label){
+  const rows=['FB','SL','CH'].map(pg=>{
+    const k=KRUZ[pg][side];
+    return `<tr><td>${pg}</td><td>${Math.round(k.use*100)}%</td><td>${k.velo.toFixed(1)}</td>
+      <td>${fmtPct(k.zn)}</td><td>${fmtPct(k.whf)}</td><td>${fmtPct(k.ch)}</td><td>${k.n}</td></tr>`;
+  }).join('');
+  return `<table class="arstbl"><caption>${label}</caption>
+    <tr><th>Pitch</th><th>Usage</th><th>Velo</th><th>Zone%</th><th>Whiff%</th><th>Chase%</th><th>N</th></tr>${rows}</table>`;
+}
+function renderKruz(){
+  const c=KRUZ_COUNTS;
+  document.getElementById('kruzView').innerHTML=`
+    <div class="hdr" style="margin-top:16px"><h1>Kruz Schoolcraft</h1>
+      <span class="sidechip" style="cursor:default">LHP</span>
+      <span class="hdrmeta">YTD · through Aug 5</span></div>
+    <div class="goalrow">
+      ${goalCard('0-0 Strike%',c.s00,c.g00)}
+      ${goalCard('1-1 Strike%',c.s11,c.g11)}
+      ${goalCard('Zone%',c.zone,c.gzone)}
+      ${goalCard('2K Quality%',c.q2k,c.gq2k)}
+    </div>
+    ${arsTable('R','Arsenal vs RHH')}
+    ${arsTable('L','Arsenal vs LHH')}
+    <p class="kn">Whiff% = whiffs / swings. Chase% = chases / out-of-zone pitches. CH vs LHH is a 12-pitch
+    sample — the 100% whiff is 2-for-2, not a green light. Hitter pitch ranks on the lineup tab are computed
+    vs a pool of Low-A lefties within 1.5 mph of Kruz's four-seam, blended toward Kruz's own pitch strengths
+    when the hitter's sample is thin.</p>`;
+}
+
+/* ================= TABS ================= */
+const tabH=document.getElementById('tabHitters'),tabK=document.getElementById('tabKruz'),tabE=document.getElementById('tabEdit');
+function show(view){
+  document.getElementById('hittersView').classList.toggle('hidden',view!=='H');
+  document.getElementById('kruzView').classList.toggle('hidden',view!=='K');
+  tabH.classList.toggle('active',view==='H');
+  tabK.classList.toggle('active',view==='K');
+}
+tabH.onclick=()=>{show('H');};
+tabK.onclick=()=>{renderKruz();show('K');};
+tabE.onclick=()=>{
+  EDITING=!EDITING;
+  tabE.classList.toggle('active',EDITING);
+  tabE.textContent=EDITING?'Done':'Edit Lineup';
+  show('H'); renderRail();
+};
+
+/* ================= INIT ================= */
+renderRail(); renderCard();
+</script>
+</body>
+</html>
