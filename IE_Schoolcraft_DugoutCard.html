@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Schoolcraft — Inland Empire Dugout Card</title>
+<title>Schoolcraft — San Jose Dugout Card</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -134,7 +134,7 @@ body{background:var(--ink);color:var(--sand);font-family:var(--body);overscroll-
 <div class="topbar">
   <div>
     <div class="brand">Schoolcraft · Dugout Card</div>
-    <div class="sub">vs Inland Empire 66ers — Aug 14, 2026</div>
+    <div class="sub">vs San Jose Giants — Aug 21, 2026</div>
   </div>
   <div class="spacer"></div>
   <button class="tabbtn active" id="tabHitters">Lineup</button>
@@ -153,69 +153,90 @@ body{background:var(--ink);color:var(--sand);font-family:var(--body);overscroll-
 /* ================= DATA (from Redshift, Aug 6 2026) ================= */
 // Kruz arsenal by pitch group x side: n, velo, whiff (of swings), chase (of OOZ), zone, usage
 const KRUZ = {
-  FB:{L:{n:244,velo:93.9,whf:.264,ch:.210,zn:.492,use:.63}, R:{n:630,velo:94.2,whf:.259,ch:.215,zn:.505,use:.61}},
-  SL:{L:{n:124,velo:80.8,whf:.479,ch:.259,zn:.315,use:.32}, R:{n:152,velo:80.5,whf:.444,ch:.299,zn:.428,use:.15}},
-  CH:{L:{n:12, velo:87.1,whf:1.0, ch:.125,zn:.333,use:.03}, R:{n:233,velo:88.0,whf:.381,ch:.263,zn:.313,use:.23}}
+  FB:{L:{n:251,velo:93.96,whf:.258,ch:.209,zn:.486,use:.64}, R:{n:650,velo:94.15,whf:.258,ch:.214,zn:.511,use:.62}},
+  SL:{L:{n:130,velo:80.8,whf:.462,ch:.261,zn:.323,use:.33}, R:{n:158,velo:80.4,whf:.466,ch:.304,zn:.418,use:.15}},
+  CH:{L:{n:12, velo:87.1,whf:1.0, ch:.125,zn:.333,use:.03}, R:{n:242,velo:88.0,whf:.400,ch:.263,zn:.310,use:.23}}
 };
-const KRUZ_COUNTS = {s00:.524, s11:.560, zone:.423, q2k:.305,
+const KRUZ_COUNTS = {s00:.520, s11:.548, zone:.424, q2k:.300,
                      g00:.63, g11:.63, gzone:.47, gq2k:.33};
 
 // Players: bam, name, jersey, side ('L','R','S','?')
 const PLAYERS = {
-  805319:{n:'Dervy Ventura',j:1,s:'S'},
-  829306:{n:'Nick Becker',j:9,s:'R'},
-  803290:{n:'Estevan Moreno',j:43,s:'R'},
-  703603:{n:'Grant Jay',j:7,s:'R'},
-  814505:{n:'Ace Reese',j:21,s:'R'},
-  683270:{n:'Connor Dykstra',j:16,s:'R'},
-  814822:{n:'Henry Ford',j:null,s:'R'},
-  836068:{n:'Brayden Corn',j:4,s:'R'},
-  807231:{n:'Ryan Wynn',j:2,s:'R'},
-  694223:{n:'Starlin Aguilar',j:31,s:'L'},
-  829045:{n:'Yorger Bautista',j:3,s:'L'},
-  806701:{n:'Jake Brown',j:17,s:'L'},
-  803734:{n:'Hayden Yost',j:36,s:'L'},
-  900002:{n:'Grant Knipp',j:48,s:'R'},      // two-way, no 2026 batting data
-  900003:{n:'Jacob Galloway',j:null,s:'L'}, // DEV — no game data
-  814456:{n:'Jo Oyama',j:null,s:'?'},          // in data, not on roster scan
-  808143:{n:'Sebastian De Andrade',j:null,s:'?'} // in data, not on roster scan
+  829034:{n:'Josuar Gonzalez',j:1,s:'R'},
+  836582:{n:'Luis Hernandez',j:5,s:'R'},
+  814294:{n:'Dario Reynoso',j:6,s:'R'},
+  815877:{n:'Jeremiah Jenkins',j:23,s:'L'},
+  692232:{n:'Fernando Gonzalez',j:7,s:'R'},
+  842179:{n:'Tanner Mally',j:51,s:'R'},
+  808401:{n:'Angel Guzman',j:10,s:'?'},
+  821762:{n:'Oliver Tejada',j:28,s:'R'},
+  701435:{n:'Broedy Poppell',j:2,s:'S'},
+  823768:{n:'Lorenzo Meola',j:35,s:'R'},
+  805371:{n:'Rod Barajas Jr.',j:33,s:'L'},
+  828489:{n:'Andy Polanco',j:29,s:'R'},
+  698973:{n:'Jose Astudillo',j:null,s:'R'},
+  701373:{n:'Isaiah Barkett',j:null,s:'R'},
+  809720:{n:'Damian Bravo',j:null,s:'R'},
+  815464:{n:'Lisbel Diaz',j:null,s:'?'},
+  813771:{n:'Robert Hipwell',j:null,s:'?'},
+  833426:{n:'Hayden Jatczak',j:null,s:'R'},
+  815929:{n:'Jhonny Level',j:null,s:'R'},
+  809686:{n:'Cam Maldonado',j:null,s:'R'},
+  692374:{n:'Jose Ramos',j:null,s:'?'},
+  832110:{n:'Daniel Rogers',j:null,s:'L'},
+  808380:{n:'Yosneiker Rivas',j:null,s:'?'}
 };
-// Placeholder order until Friday's lineup card — reorder via Edit Lineup
-const DEFAULT_LINEUP = [805319,829306,803290,703603,814505,683270,814822,836068,807231];
-const DEFAULT_BENCH  = [694223,829045,806701,803734,900002,900003,814456,808143];
+// Aug 20 order as placeholder — confirm vs today's card via Edit Lineup
+const DEFAULT_LINEUP = [829034,836582,814294,815877,692232,842179,808401,821762,701435];
+const DEFAULT_BENCH  = [823768,805371,828489,698973,701373,809720,815464,813771,833426,815929,809686,692374,832110,808380];
 
 // Q5 aggressiveness: swingAll, firstPitch, risp, chase
 const AGGR = {
-  814505:[.410,.250,.273,.256], 836068:[.431,.379,.511,.261], 683270:[.408,.237,.379,.266],
-  805319:[.423,.330,.369,.255], 803290:[.477,.346,.515,.334], 703603:[.456,.413,.410,.281],
-  803734:[.542,.455,.541,.281], 814822:[.504,.484,.486,.302], 806701:[.500,.412,.444,.267],
-  814456:[.508,.333,.571,.343], 829306:[.356,.321,.347,.168], 807231:[.426,.160,.455,.222],
-  808143:[.382,.417,.448,.224], 694223:[.522,.372,.586,.360], 829045:[.722,.786,.667,.737]
+  828489:[.547,.477,.545,.374], 808401:[.354,.296,.400,.187], 701435:[.431,.370,.400,.242],
+  809686:[.485,.338,.492,.326], 809720:[.536,.437,.589,.358], 832110:[.402,.317,.390,.267],
+  814294:[.378,.224,.397,.201], 692232:[.453,.333,.486,.282], 833426:[.375,.223,.386,.196],
+  701373:[.395,.163,.405,.287], 815877:[.459,.386,.450,.257], 815929:[.458,.332,.453,.309],
+  698973:[.562,.431,.651,.405], 692374:[.417,.233,.444,.328], 829034:[.425,.302,.402,.285],
+  815464:[.448,.333,.524,.347], 823768:[.455,.258,.446,.299], 836582:[.471,.330,.615,.271],
+  821762:[.474,.449,.493,.329], 813771:[.396,.462,.200,.231], 805371:[.489,.339,.529,.338],
+  842179:[.418,.434,.387,.211], 808380:[.596,.548,.629,.455]
 };
 // Q6 runners: [sb, cs]
 const RUN = {
-  805319:[29,8],803290:[19,4],829306:[7,1],703603:[5,2],836068:[4,0],683270:[3,2],
-  806701:[3,0],814822:[1,0],807231:[1,0],808143:[1,1],694223:[0,1],803734:[0,1]
+  828489:[35,12],814294:[18,5],701373:[17,7],809686:[16,4],823768:[15,4],698973:[11,2],
+  701435:[11,0],815929:[11,1],809720:[6,0],833426:[5,3],829034:[5,3],842179:[2,0],
+  805371:[2,0],821762:[2,0],692374:[1,0],832110:[0,1],808380:[0,1]
 };
 
 // Q4 attack rows vs comp-LHP pool (2026): [bam, bucket, group, pitches, swings, whiff, chase, bip, hardHits, xwoba]
 const ATK = [
- [683270,'K','CH',6,2,0,.333,0,0,null],[683270,'K','FB',7,3,.667,.25,1,0,.810],
- [683270,'B','FB',6,5,.4,.667,2,1,.389],[683270,'B','SL',6,5,.4,.5,2,0,.474],
- [683270,'E','CH',7,3,1,.75,0,0,null],[683270,'E','FB',17,5,.2,0,2,1,.466],
- [805319,'K','FB',12,7,0,0,3,1,.101],[805319,'B','FB',12,4,0,0,2,1,.463],
- [805319,'E','CH',5,2,1,.5,0,0,null],[805319,'E','FB',23,7,.286,.071,3,0,.295],
- [803290,'K','CH',7,5,.6,.667,2,1,.020],[803290,'K','FB',11,5,.6,.167,1,0,.511],
- [803290,'B','FB',7,3,.333,0,1,1,1.372],[803290,'E','CH',9,4,.5,.333,0,0,null],
- [803290,'E','FB',18,10,.2,.286,2,2,.905],[803290,'E','SL',5,1,1,.333,0,0,null],
- [703603,'K','FB',8,3,.333,0,1,1,.643],[703603,'B','FB',9,3,.667,.2,0,0,null],
- [703603,'E','CH',7,2,.5,0,1,1,1.753],[703603,'E','FB',11,6,.333,.25,2,0,.455],
- [829306,'B','FB',5,2,.5,0,1,0,.010],
- [694223,'K','FB',5,3,0,1,1,1,.141]
+ [828489,'B','FB',15,3,.333,0,1,0,.072],[828489,'E','FB',9,4,0,.2,3,1,.096],
+ [828489,'E','SL',8,3,.667,.333,1,0,.096],
+ [701435,'B','FB',5,4,0,.667,3,0,.159],[701435,'E','FB',5,4,.25,.5,1,0,.005],
+ [809686,'B','FB',9,5,.4,.5,2,1,.013],[809686,'B','SL',6,2,0,.333,1,0,.055],
+ [809686,'E','CH',7,4,.75,.25,0,0,null],[809686,'E','FB',13,6,.167,.143,2,1,.118],
+ [809686,'E','SL',6,3,.667,.4,0,0,null],
+ [809720,'B','FB',6,3,0,0,1,1,.321],[809720,'E','FB',7,2,0,0,2,1,.424],
+ [814294,'K','FB',10,5,.6,.25,2,2,.771],[814294,'B','FB',12,4,.5,.143,2,0,.428],
+ [814294,'E','CH',6,4,.5,0,2,2,1.325],[814294,'E','FB',11,5,.2,0,2,1,.394],
+ [814294,'E','SL',8,2,.5,.25,0,0,null],
+ [692232,'E','FB',6,3,0,.25,2,1,.082],
+ [833426,'K','FB',7,3,.333,.2,2,1,.097],[833426,'B','FB',5,3,0,.5,2,0,.430],
+ [833426,'B','SL',6,3,0,0,0,0,null],[833426,'E','FB',9,2,0,.143,1,1,.391],
+ [833426,'E','SL',7,2,1,.25,0,0,null],
+ [701373,'B','FB',16,5,.2,0,4,1,.266],[701373,'B','SL',5,1,0,.2,0,0,null],
+ [701373,'E','FB',10,2,0,0,0,0,null],
+ [815877,'K','FB',7,3,0,0,0,0,null],[815877,'K','SL',6,6,.5,1,1,0,.911],
+ [815877,'E','FB',15,5,.6,.167,0,0,null],
+ [815929,'E','SL',5,4,.25,0,2,2,.116],
+ [698973,'B','FB',7,2,0,0,2,2,.492],
+ [829034,'E','FB',10,3,.333,0,0,0,null],
+ [823768,'E','CH',7,5,.4,.333,3,0,.083],[823768,'E','FB',8,6,.333,.5,4,1,.110],
+ [805371,'E','FB',10,7,0,.25,4,1,.080],[805371,'E','SL',5,1,1,.25,0,0,null]
 ];
 
 /* ================= STATE / PERSISTENCE ================= */
-const LSKEY='kruz_ie_aug2026_v1';
+const LSKEY='kruz_sj_aug2026_v1';
 let mem={};
 function loadState(){
   try{const raw=localStorage.getItem(LSKEY); if(raw) return JSON.parse(raw);}catch(e){}
